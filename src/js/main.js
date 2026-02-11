@@ -6,6 +6,8 @@ function converterValor() {
   const input = document.querySelector(".input-valor").value;
   const converter = document.querySelector(".converter");
   const convertido = document.querySelector(".convertido");
+  const moeda = document.querySelector(".moeda-convertida");
+  const bandeira = document.querySelector(".bandeira-convertida");
 
   const dolarToday = 5.2;
   const euroToday = 6.2;
@@ -17,6 +19,8 @@ function converterValor() {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     }).format(input / dolarToday);
+    moeda.textContent = "Dólar Americano";
+    bandeira.src = `./assets/img/${currencySelect.value}.png`;
   }
 
   if (currencySelect.value == "euro") {
@@ -26,6 +30,8 @@ function converterValor() {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     }).format(input / euroToday);
+    moeda.textContent = "Euro";
+    bandeira.src = `./assets/img/${currencySelect.value}.png`;
   }
 
   converter.textContent = new Intl.NumberFormat("pt-BR", {
@@ -34,22 +40,5 @@ function converterValor() {
   }).format(input);
 }
 
-function changeCurrency() {
-  const moeda = document.querySelector(".moeda");
-  const bandeira = document.querySelector(".bandeira-convertida");
-
-  if (currencySelect.value == "dolar") {
-    moeda.textContent = "Dólar Americano";
-    bandeira.src = `./assets/img/${currencySelect.value}.png`;
-  }
-
-  if (currencySelect.value == "euro") {
-    moeda.textContent = "Euro";
-    bandeira.src = `./assets/img/${currencySelect.value}.png`;
-  }
-
-  converterValor();
-}
-
-currencySelect.addEventListener("change", changeCurrency);
+currencySelect.addEventListener("change", converterValor);
 convertButton.addEventListener("click", converterValor);

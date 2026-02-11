@@ -23,43 +23,45 @@
         <form action="">
           <label for="real">
             <p class="conversor__label">Converter <b>de</b></p>
-            <select name="" id="">
+            <select class="select-converter" name="" id="">
               <option value="">R$ Real Brasileiro</option>
             </select>
           </label>
           <label for="">
             <p class="conversor__label">Converter <b>para</b></p>
-            <select name="" id="">
-              <option value="">US$ Dolar Americano</option>
-              <option value="">€ Euro</option>
-              <option value="">£ Libra</option>
-              <option value="">₿ Bitcoin</option>
+            <select class="select-convertido" name="" id="">
+              <option value="dolar">US$ Dolar Americano</option>
+              <option value="euro">€ Euro</option>
             </select>
           </label>
 
           <label for="">
             <p class="conversor__label">Valor</p>
-            <input type="number" placeholder="R$ 10.000,00" />
+            <input class="input-valor" type="number" placeholder="R$ 10.000,00" />
           </label>
-          <button>Converter</button>
+          <button class="convertButton" type="button">Converter</button>
         </form>
       </section>
       <section class="resultado">
         <div class="resultado__item">
           <img class="bandeira" src="./assets/img/real.png" alt="Bandeira do Brasil" />
           <p>Real</p>
-          <p class="resultado__item-valor">R$ 10.000,00</p>
+          <p class="resultado__item-valor converter">R$ 0,00</p>
         </div>
 
         <img src="./assets/img/Vector@2x.png" alt="Vetor/Seta apontando para baixo" />
 
         <div class="resultado__item">
-          <img class="bandeira" src="./assets/img/dolar.png" alt="Bandeira dos EUA" />
-          <p>Dólar Americano</p>
-          <p class="resultado__item-valor">US$ 2.000,00</p>
+          <img
+            class="bandeira bandeira-convertida"
+            src="./assets/img/dolar.png"
+            alt="Bandeira dos EUA"
+          />
+          <p class="moeda">Dólar Americano</p>
+          <p class="resultado__item-valor convertido">US$ 0,00</p>
         </div>
       </section>
     </main>
-    <script src="./src/js/main.js"></script>
+    <script src="./src/js/main.js" defer></script>
   </body>
 </html>

@@ -28,23 +28,12 @@ function converterValor() {
   const bandeira = document.querySelector(".bandeira-convertida");
   const rate = selectedOption.dataset.rate;
 
-  if (currencySelect.value == "dolar") {
-    convertido.textContent = formatarMoeda().format(input / rate);
-    moeda.textContent = "Dólar Americano";
-    bandeira.src = `./assets/img/${currencySelect.value}.png`;
-  }
+  // Valor convertido
+  convertido.textContent = formatarMoeda().format(input / rate);
+  moeda.textContent = selectedOption.textContent;
+  bandeira.src = `./assets/img/${currencySelect.value}.png`;
 
-  if (currencySelect.value == "euro") {
-    convertido.textContent = convertido.textContent = formatarMoeda().format(input / rate);
-    moeda.textContent = "Euro";
-    bandeira.src = `./assets/img/${currencySelect.value}.png`;
-  }
-  if (currencySelect.value == "libra") {
-    convertido.textContent = convertido.textContent = formatarMoeda().format(input / rate);
-    moeda.textContent = "Libra";
-    bandeira.src = `./assets/img/${currencySelect.value}.png`;
-  }
-
+  // Valor a converter
   converter.textContent = new Intl.NumberFormat("pt-BR", {
     style: "currency",
     currency: "BRL",

@@ -12,6 +12,8 @@
     />
     <!-- CSS -->
     <link rel="stylesheet" href="src/css/style.css" />
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="./assets/img/logo2.png" type="image/x-icon" />
     <title>Conversor de Moedas</title>
   </head>
   <body>
@@ -24,14 +26,24 @@
           <label for="real">
             <p class="conversor__label">Converter <b>de</b></p>
             <select class="select-converter" name="" id="">
-              <option value="real">R$ Real Brasileiro</option>
+              <option value="real" data-locale="pt-BR" data-currency="BRL" data-rate="5.2">
+                R$ Real Brasileiro
+              </option>
             </select>
           </label>
           <label for="">
             <p class="conversor__label">Converter <b>para</b></p>
             <select class="select-convertido" name="" id="">
-              <option value="dolar">US$ Dolar Americano</option>
-              <option value="euro">€ Euro</option>
+              <option value="dolar" data-locale="en-US" data-currency="USD" data-rate="5.2">
+                $ Dólar Americano
+              </option>
+
+              <option value="euro" data-locale="de-DE" data-currency="EUR" data-rate="6.2">
+                € Euro
+              </option>
+              <option value="libra" data-locale="en-GB" data-currency="GBP" data-rate="7.2">
+                £ Libra
+              </option>
             </select>
           </label>
 
@@ -62,7 +74,7 @@
             alt="Bandeira dos EUA"
           />
           <p class="moeda-convertida">Dólar Americano</p>
-          <p class="resultado__item-valor convertido">US$ 0,00</p>
+          <p class="resultado__item-valor convertido">$ 0,00</p>
         </div>
       </section>
     </main>

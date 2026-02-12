@@ -112,6 +112,13 @@ button {
   box-shadow: 1px 1px 5px #00000069;
 }
 
+/* Temporariamente bloqueado — futuramente permitirá conversão entre moedas */
+.select-converter {
+  pointer-events: none;
+  appearance: none;
+  cursor: default;
+}
+
 /* RESULTADO */
 .resultado,
 .resultado__item {

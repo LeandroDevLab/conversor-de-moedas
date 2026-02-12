@@ -17,16 +17,19 @@
     <title>Conversor de Moedas</title>
   </head>
   <body>
-    <div class="fundo"><img src="./assets/img/background.jpg" alt="" /></div>
+    <div class="fundo">
+      <img src="./assets/img/background.jpg" alt="Imagem de fundo, várias moedas de ouro no ar!" />
+    </div>
     <header>
       <img class="logo" src="./assets/img/logo2.png" alt="logo do conversor de moeda - animado" />
     </header>
     <main>
       <section class="conversor">
-        <form action="">
+        <form>
           <label for="real">
             <p class="conversor__label">Converter <b>de</b></p>
-            <select class="select-converter" name="" id="">
+            <!-- Select temporariamente desabilitado com CSS -->
+            <select class="select-converter">
               <option value="real" data-locale="pt-BR" data-currency="BRL" data-rate="5.2">
                 R$ Real Brasileiro
               </option>
@@ -34,7 +37,7 @@
           </label>
           <label for="">
             <p class="conversor__label">Converter <b>para</b></p>
-            <select class="select-convertido" name="" id="">
+            <select class="select-convertido">
               <option value="dolar" data-locale="en-US" data-currency="USD" data-rate="5.2">
                 Dólar Americano
               </option>
@@ -50,7 +53,7 @@
 
           <label for="">
             <p class="conversor__label">Valor</p>
-            <input class="input-valor" type="number" placeholder="R$ 10.000,00" />
+            <input class="input-valor" type="text" inputmode="numeric" placeholder="R$ 10.000,00" />
           </label>
           <button class="convertButton" type="button">Converter</button>
         </form>

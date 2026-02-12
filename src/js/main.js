@@ -1,4 +1,5 @@
 // Dica - dividir em micro tarefa
+const inputValor = document.querySelector(".input-valor");
 const convertButton = document.querySelector(".convertButton");
 const currencySelect = document.querySelector(".select-convertido");
 const convertido = document.querySelector(".convertido");
@@ -22,7 +23,11 @@ function formatarMoeda() {
 
 function converterValor() {
   const selectedOption = currencySelect.selectedOptions[0];
-  const input = document.querySelector(".input-valor").value;
+
+  const raw = inputValor.dataset.value;
+  if (!raw) return;
+  const input = Number(raw);
+
   const converter = document.querySelector(".converter");
   const moeda = document.querySelector(".moeda-convertida");
   const bandeira = document.querySelector(".bandeira-convertida");
@@ -39,6 +44,31 @@ function converterValor() {
     currency: "BRL",
   }).format(input);
 }
+
+function currencyMask(input, locale, currency) {
+  const formatter = new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency,
+  });
+
+  input.addEventListener("input", (e) => {
+    let rawValue = e.target.value.replace(/\D/g, "");
+
+    // deixa vazio se apagar tudo
+    if (!rawValue) {
+      input.dataset.value = "";
+      e.target.value = "";
+      return;
+    }
+
+    const value = Number(rawValue) / 100;
+
+    input.dataset.value = value;
+    e.target.value = formatter.format(value);
+  });
+}
+
+currencyMask(inputValor, "pt-BR", "BRL");
 
 currencySelect.addEventListener("change", converterValor);
 convertButton.addEventListener("click", converterValor);

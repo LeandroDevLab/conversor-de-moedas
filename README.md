@@ -17,6 +17,11 @@
       </tr>
     </table>
 
+## 🚀 Acesse o projeto
+
+👉 **[Visualize a aplicação online](https://leandrodevlab.github.io/conversor-de-moedas/)**  
+_(Não requer instalação — abra direto no navegador.)_
+
 **Conversor de Moedas** é uma aplicação web simples desenvolvida com **HTML, CSS e JavaScript**, que permite converter valores em **Reais (BRL)** para **Dólar Americano (USD)** e **Euro (EUR)**.  
 O foco do projeto é demonstrar domínio de lógica de programação, manipulação de DOM, boas práticas de código e uso de atributos dinâmicos para tornar o comportamento mais escalável.
 
@@ -43,6 +48,13 @@ O projeto fortalece os seguintes conceitos de front-end:
 - Organização de projeto com estrutura de pastas limpa
 
 ---
+
+## 🧑‍💻 Autor
+
+**Leandro Sávio Oliota Ribeiro**  
+Front-end Developer
+
+[LinkedIn](https://www.linkedin.com/in/leandrosoribeiro/) • [Portfólio](https://leandrodevlab.github.io/)
 
 ## 🚀 Como Usar
 

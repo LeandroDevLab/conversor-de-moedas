@@ -26,7 +26,7 @@ function converterValor() {
   const converter = document.querySelector(".converter");
   const moeda = document.querySelector(".moeda-convertida");
   const bandeira = document.querySelector(".bandeira-convertida");
-  const rate = selectedOption.dataset.rate;
+  const rate = Number(selectedOption.dataset.rate);
 
   // Valor convertido
   convertido.textContent = formatarMoeda().format(input / rate);

@@ -3,6 +3,7 @@ const inputValor = document.querySelector(".input-valor");
 const convertButton = document.querySelector(".convertButton");
 const currencySelect = document.querySelector(".select-convertido");
 const convertido = document.querySelector(".convertido");
+const form = document.querySelector("form");
 
 //option selecionada
 const selectedOption = currencySelect.selectedOptions[0];
@@ -72,3 +73,8 @@ currencyMask(inputValor, "pt-BR", "BRL");
 
 currencySelect.addEventListener("change", converterValor);
 convertButton.addEventListener("click", converterValor);
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  converterValor();
+});

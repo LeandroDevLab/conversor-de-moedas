@@ -1,16 +1,18 @@
 // Dica - dividir em micro tarefa
-const inputValor = document.querySelector(".input-valor");
-const convertButton = document.querySelector(".convertButton");
-const currencySelect = document.querySelector(".select-convertido");
-const convertido = document.querySelector(".convertido");
 const form = document.querySelector("form");
 
+const elements = {
+  inputValor: form.querySelector(".input-valor"),
+  convertButton: form.querySelector(".convertButton"),
+  currencySelect: form.querySelector(".select-convertido"),
+  convertido: document.querySelector(".convertido"),
+};
+
 //option selecionada
-const selectedOption = currencySelect.selectedOptions[0];
-//console.log(selectedOption);
+const selectedOption = elements.currencySelect.selectedOptions[0];
 
 function formatarMoeda() {
-  const selectedOption = currencySelect.selectedOptions[0];
+  const selectedOption = elements.currencySelect.selectedOptions[0];
   //console.log(currencySelect.selectedOptions[0]);  //debug
   const locale = selectedOption.dataset.locale;
   const currency = selectedOption.dataset.currency;
@@ -23,9 +25,9 @@ function formatarMoeda() {
 }
 
 function converterValor() {
-  const selectedOption = currencySelect.selectedOptions[0];
+  const selectedOption = elements.currencySelect.selectedOptions[0];
 
-  const raw = inputValor.dataset.value;
+  const raw = elements.inputValor.dataset.value;
   if (!raw) return;
   const input = Number(raw);
 
@@ -35,9 +37,9 @@ function converterValor() {
   const rate = Number(selectedOption.dataset.rate);
 
   // Valor convertido
-  convertido.textContent = formatarMoeda().format(input / rate);
+  elements.convertido.textContent = formatarMoeda().format(input / rate);
   moeda.textContent = selectedOption.textContent;
-  bandeira.src = `./assets/img/${currencySelect.value}.png`;
+  bandeira.src = `./assets/img/${elements.currencySelect.value}.png`;
 
   // Valor a converter
   converter.textContent = new Intl.NumberFormat("pt-BR", {
@@ -69,10 +71,10 @@ function currencyMask(input, locale, currency) {
   });
 }
 
-currencyMask(inputValor, "pt-BR", "BRL");
+currencyMask(elements.inputValor, "pt-BR", "BRL");
 
-currencySelect.addEventListener("change", converterValor);
-convertButton.addEventListener("click", converterValor);
+elements.currencySelect.addEventListener("change", converterValor);
+elements.convertButton.addEventListener("click", converterValor);
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();

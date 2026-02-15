@@ -68,7 +68,10 @@ function converterValor() {
 }
 
 elements.currentSelectTo.addEventListener("change", converterValor);
-elements.currentSelectFrom.addEventListener("change", converterValor);
+elements.currentSelectFrom.addEventListener("change", () => {
+  currencyMask(elements.inputValor);
+  converterValor();
+});
 elements.convertButton.addEventListener("click", converterValor);
 
 form.addEventListener("submit", (e) => {
@@ -77,13 +80,15 @@ form.addEventListener("submit", (e) => {
 });
 
 //Assiste e formata o input
-function currencyMask(input, locale, currency) {
-  const formatter = new Intl.NumberFormat(locale, {
-    style: "currency",
-    currency,
-  });
-
+function currencyMask(input) {
   input.addEventListener("input", (e) => {
+    const currencySelect = elements.currentSelectFrom.selectedOptions[0];
+    console.log(currencySelect);
+
+    const formatter = new Intl.NumberFormat(currencySelect.dataset.locale, {
+      style: "currency",
+      currency: currencySelect.dataset.currency,
+    });
     let rawValue = e.target.value.replace(/\D/g, "");
 
     // deixa vazio se apagar tudo
@@ -100,4 +105,4 @@ function currencyMask(input, locale, currency) {
   });
 }
 
-currencyMask(elements.inputValor, "pt-BR", "BRL");
+currencyMask(elements.inputValor);

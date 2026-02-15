@@ -4,16 +4,19 @@ const form = document.querySelector("form");
 const elements = {
   inputValor: form.querySelector(".input-valor"),
   convertButton: form.querySelector(".convertButton"),
-  currencySelect: form.querySelector(".select-convertido"),
+  currentSelectFrom: form.querySelector(".select-converter"),
+  currentSelectTo: form.querySelector(".select-convertido"),
   convertido: document.querySelector(".convertido"),
 };
 
-//option selecionada
-const selectedOption = elements.currencySelect.selectedOptions[0];
+function convert(input, convertFrom, convertTo) {
+  if (!input) return;
+  return (Number(input) * convertFrom) / convertTo;
+}
 
 function formatarMoeda() {
-  const selectedOption = elements.currencySelect.selectedOptions[0];
-  //console.log(currencySelect.selectedOptions[0]);  //debug
+  const selectedOption = elements.currentSelectTo.selectedOptions[0];
+  //console.log(currentSelectTo.selectedOptions[0]);  //debug
   const locale = selectedOption.dataset.locale;
   const currency = selectedOption.dataset.currency;
   return new Intl.NumberFormat(locale, {
@@ -25,29 +28,45 @@ function formatarMoeda() {
 }
 
 function converterValor() {
-  const selectedOption = elements.currencySelect.selectedOptions[0];
-
-  const raw = elements.inputValor.dataset.value;
-  if (!raw) return;
-  const input = Number(raw);
+  const selectedOptionFrom = elements.currentSelectFrom.selectedOptions[0];
+  const selectedOptionTo = elements.currentSelectTo.selectedOptions[0];
+  const inputValueToConvert = Number(elements.inputValor.dataset.value);
+  const value = convert(
+    inputValueToConvert,
+    selectedOptionFrom.dataset.rate,
+    selectedOptionTo.dataset.rate,
+  );
 
   const converter = document.querySelector(".converter");
-  const moeda = document.querySelector(".moeda-convertida");
-  const bandeira = document.querySelector(".bandeira-convertida");
-  const rate = Number(selectedOption.dataset.rate);
+  const moedaConvertida = document.querySelector(".moeda-convertida");
+  const moedaConverter = document.querySelector(".moeda-converter");
+  const bandeiraConvertida = document.querySelector(".bandeira-convertida");
+  const bandeiraConverter = document.querySelector(".bandeira-converter");
 
   // Valor convertido
-  elements.convertido.textContent = formatarMoeda().format(input / rate);
-  moeda.textContent = selectedOption.textContent;
-  bandeira.src = `./assets/img/${elements.currencySelect.value}.png`;
+  elements.convertido.textContent = formatarMoeda().format(value);
+  moedaConvertida.textContent = selectedOptionTo.textContent;
+  moedaConverter.textContent = selectedOptionFrom.textContent;
+  bandeiraConvertida.src = `./assets/img/${elements.currentSelectTo.value}.png`;
+  bandeiraConverter.src = `./assets/img/${elements.currentSelectFrom.value}.png`;
 
   // Valor a converter
   converter.textContent = new Intl.NumberFormat("pt-BR", {
     style: "currency",
     currency: "BRL",
-  }).format(input);
+  }).format(inputValueToConvert);
 }
 
+elements.currentSelectTo.addEventListener("change", converterValor);
+elements.currentSelectFrom.addEventListener("change", converterValor);
+elements.convertButton.addEventListener("click", converterValor);
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  converterValor();
+});
+
+//Assiste e formata o input
 function currencyMask(input, locale, currency) {
   const formatter = new Intl.NumberFormat(locale, {
     style: "currency",
@@ -72,11 +91,3 @@ function currencyMask(input, locale, currency) {
 }
 
 currencyMask(elements.inputValor, "pt-BR", "BRL");
-
-elements.currencySelect.addEventListener("change", converterValor);
-elements.convertButton.addEventListener("click", converterValor);
-
-form.addEventListener("submit", (e) => {
-  e.preventDefault();
-  converterValor();
-});

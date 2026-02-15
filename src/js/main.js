@@ -30,8 +30,8 @@ function formatarMoeda() {
 function converterValor() {
   const selectedOptionFrom = elements.currentSelectFrom.selectedOptions[0];
   const selectedOptionTo = elements.currentSelectTo.selectedOptions[0];
-  const inputValueToConvert = Number(elements.inputValor.dataset.value);
-  const value = convert(
+  let inputValueToConvert = Number(elements.inputValor.dataset.value);
+  let value = convert(
     inputValueToConvert,
     selectedOptionFrom.dataset.rate,
     selectedOptionTo.dataset.rate,
@@ -43,18 +43,28 @@ function converterValor() {
   const bandeiraConvertida = document.querySelector(".bandeira-convertida");
   const bandeiraConverter = document.querySelector(".bandeira-converter");
 
-  // Valor convertido
-  elements.convertido.textContent = formatarMoeda().format(value);
   moedaConvertida.textContent = selectedOptionTo.textContent;
   moedaConverter.textContent = selectedOptionFrom.textContent;
   bandeiraConvertida.src = `./assets/img/${elements.currentSelectTo.value}.png`;
   bandeiraConverter.src = `./assets/img/${elements.currentSelectFrom.value}.png`;
-
-  // Valor a converter
-  converter.textContent = new Intl.NumberFormat("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-  }).format(inputValueToConvert);
+  if (inputValueToConvert) {
+    // Valor convertido
+    elements.convertido.textContent = formatarMoeda().format(value);
+    // Valor a converter
+    converter.textContent = new Intl.NumberFormat(selectedOptionFrom.dataset.locale, {
+      style: "currency",
+      currency: selectedOptionFrom.dataset.currency,
+    }).format(inputValueToConvert);
+  } else {
+    value = 0;
+    inputValueToConvert = 0;
+    elements.convertido.textContent = formatarMoeda().format(value);
+    // Valor a converter
+    converter.textContent = new Intl.NumberFormat(selectedOptionFrom.dataset.locale, {
+      style: "currency",
+      currency: selectedOptionFrom.dataset.currency,
+    }).format(inputValueToConvert);
+  }
 }
 
 elements.currentSelectTo.addEventListener("change", converterValor);

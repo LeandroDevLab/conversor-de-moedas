@@ -10,7 +10,7 @@ const elements = {
 };
 
 function convert(input, convertFrom, convertTo) {
-  if (!input) return;
+  if (!input) return 0;
   return (Number(input) * convertFrom) / convertTo;
 }
 
@@ -38,66 +38,63 @@ function formatarMoeda() {
 }
 
 async function converterValor() {
-  const selectedOptionFrom = elements.currentSelectFrom.selectedOptions[0];
-  const selectedOptionTo = elements.currentSelectTo.selectedOptions[0];
-  let inputValueToConvert = Number(elements.inputValor.dataset.value);
+  try {
+    const selectedOptionFrom = elements.currentSelectFrom.selectedOptions[0];
+    const selectedOptionTo = elements.currentSelectTo.selectedOptions[0];
+    let inputValueToConvert = Number(elements.inputValor.dataset.value);
 
-  function identifyCurrency(value) {
-    if (value === "BRL") {
-      return moeda.BRL;
-    } else if (value === "BTC") {
-      return moeda.BTC;
-    } else if (value === "USD") {
-      return moeda.USD;
-    } else if (value === "EUR") {
-      return moeda.EUR;
+    const data = await fetch(
+      "https://economia.awesomeapi.com.br/last/USD-BRL,EUR-BRL,BTC-BRL",
+    ).then((res) => res.json());
+
+    const moeda = {
+      BRL: 1,
+      BTC: data.BTCBRL.high,
+      EUR: data.EURBRL.high,
+      USD: data.USDBRL.high,
+    };
+
+    function identifyCurrency(value) {
+      return moeda[value];
     }
-  }
 
-  const data = await fetch("https://economia.awesomeapi.com.br/last/USD-BRL,EUR-BRL,BTC-BRL").then(
-    (res) => res.json(),
-  );
+    let value = convert(
+      inputValueToConvert,
+      identifyCurrency(selectedOptionFrom.dataset.currency),
+      identifyCurrency(selectedOptionTo.dataset.currency),
+    );
 
-  const moeda = {
-    BRL: 1,
-    BTC: data.BTCBRL.high,
-    EUR: data.EURBRL.high,
-    USD: data.USDBRL.high,
-  };
+    const converter = document.querySelector(".converter");
+    const moedaConvertida = document.querySelector(".moeda-convertida");
+    const moedaConverter = document.querySelector(".moeda-converter");
+    const bandeiraConvertida = document.querySelector(".bandeira-convertida");
+    const bandeiraConverter = document.querySelector(".bandeira-converter");
 
-  let value = convert(
-    inputValueToConvert,
-    identifyCurrency(selectedOptionFrom.dataset.currency),
-    identifyCurrency(selectedOptionTo.dataset.currency),
-  );
-
-  const converter = document.querySelector(".converter");
-  const moedaConvertida = document.querySelector(".moeda-convertida");
-  const moedaConverter = document.querySelector(".moeda-converter");
-  const bandeiraConvertida = document.querySelector(".bandeira-convertida");
-  const bandeiraConverter = document.querySelector(".bandeira-converter");
-
-  moedaConvertida.textContent = selectedOptionTo.textContent;
-  moedaConverter.textContent = selectedOptionFrom.textContent;
-  bandeiraConvertida.src = `./assets/img/${elements.currentSelectTo.value}.png`;
-  bandeiraConverter.src = `./assets/img/${elements.currentSelectFrom.value}.png`;
-  if (inputValueToConvert) {
-    // Valor convertido
-    elements.convertido.textContent = formatarMoeda().format(value);
-    // Valor a converter
-    converter.textContent = new Intl.NumberFormat(selectedOptionFrom.dataset.locale, {
-      style: "currency",
-      currency: selectedOptionFrom.dataset.currency,
-    }).format(inputValueToConvert);
-  } else {
-    value = 0;
-    inputValueToConvert = 0;
-    elements.convertido.textContent = formatarMoeda().format(value);
-    // Valor a converter
-    converter.textContent = new Intl.NumberFormat(selectedOptionFrom.dataset.locale, {
-      style: "currency",
-      currency: selectedOptionFrom.dataset.currency,
-    }).format(inputValueToConvert);
+    moedaConvertida.textContent = selectedOptionTo.textContent;
+    moedaConverter.textContent = selectedOptionFrom.textContent;
+    bandeiraConvertida.src = `./assets/img/${elements.currentSelectTo.value}.png`;
+    bandeiraConverter.src = `./assets/img/${elements.currentSelectFrom.value}.png`;
+    if (inputValueToConvert) {
+      // Valor convertido
+      elements.convertido.textContent = formatarMoeda().format(value);
+      // Valor a converter
+      converter.textContent = new Intl.NumberFormat(selectedOptionFrom.dataset.locale, {
+        style: "currency",
+        currency: selectedOptionFrom.dataset.currency,
+      }).format(inputValueToConvert);
+    } else {
+      value = 0;
+      inputValueToConvert = 0;
+      elements.convertido.textContent = formatarMoeda().format(value);
+      // Valor a converter
+      converter.textContent = new Intl.NumberFormat(selectedOptionFrom.dataset.locale, {
+        style: "currency",
+        currency: selectedOptionFrom.dataset.currency,
+      }).format(inputValueToConvert);
+    }
+  } catch (error) {
+    console.error("Erro na conversão:", error);
+    alert("Não foi possível obter a cotação. Tente novamente.");
   }
 }
 

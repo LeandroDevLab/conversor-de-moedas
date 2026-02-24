@@ -16,25 +16,59 @@ function convert(input, convertFrom, convertTo) {
 
 function formatarMoeda() {
   const selectedOption = elements.currentSelectTo.selectedOptions[0];
-  //console.log(currentSelectTo.selectedOptions[0]);  //debug
-  const locale = selectedOption.dataset.locale;
-  const currency = selectedOption.dataset.currency;
-  return new Intl.NumberFormat(locale, {
-    style: "currency",
-    currency: currency,
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
+  if (selectedOption.dataset.currency === "BTC") {
+    const locale = selectedOption.dataset.locale;
+    const currency = selectedOption.dataset.currency;
+    return new Intl.NumberFormat(locale, {
+      style: "currency",
+      currency: currency,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 8,
+    });
+  } else {
+    const locale = selectedOption.dataset.locale;
+    const currency = selectedOption.dataset.currency;
+    return new Intl.NumberFormat(locale, {
+      style: "currency",
+      currency: currency,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  }
 }
 
-function converterValor() {
+async function converterValor() {
   const selectedOptionFrom = elements.currentSelectFrom.selectedOptions[0];
   const selectedOptionTo = elements.currentSelectTo.selectedOptions[0];
   let inputValueToConvert = Number(elements.inputValor.dataset.value);
+
+  function identifyCurrency(value) {
+    if (value === "BRL") {
+      return moeda.BRL;
+    } else if (value === "BTC") {
+      return moeda.BTC;
+    } else if (value === "USD") {
+      return moeda.USD;
+    } else if (value === "EUR") {
+      return moeda.EUR;
+    }
+  }
+
+  const data = await fetch("https://economia.awesomeapi.com.br/last/USD-BRL,EUR-BRL,BTC-BRL").then(
+    (res) => res.json(),
+  );
+
+  const moeda = {
+    BRL: 1,
+    BTC: data.BTCBRL.high,
+    EUR: data.EURBRL.high,
+    USD: data.USDBRL.high,
+  };
+
   let value = convert(
     inputValueToConvert,
-    selectedOptionFrom.dataset.rate,
-    selectedOptionTo.dataset.rate,
+    identifyCurrency(selectedOptionFrom.dataset.currency),
+    identifyCurrency(selectedOptionTo.dataset.currency),
   );
 
   const converter = document.querySelector(".converter");
@@ -83,7 +117,6 @@ form.addEventListener("submit", (e) => {
 function currencyMask(input) {
   input.addEventListener("input", (e) => {
     const currencySelect = elements.currentSelectFrom.selectedOptions[0];
-    console.log(currencySelect);
 
     const formatter = new Intl.NumberFormat(currencySelect.dataset.locale, {
       style: "currency",
